@@ -24,7 +24,7 @@ Posts are separated by a line containing only `$`. To add a post, add at the end
 
 Rules:
 - DATE is `YYYY-MM-DD`. TIME is `h:mm AM` or `h:mm PM`. Times are shown as Bangladesh local time.
-- No photo yet? Leave out the URL line. The post shows "Photograph to be added". Add the URL line later and the photo appears.
+- No photo yet? Leave out the URL line. The post shows the date, time and text only. Add the URL line later and the photo appears.
 - Order in the file does not matter. Visitors can switch between newest-first (default) and oldest-first.
 - A malformed record is skipped (see the browser console) and never breaks the others.
 - Adding `|FEATURED` after the description on the first line gives a post the quiet emphasised style. It is used on the final goodbye post.

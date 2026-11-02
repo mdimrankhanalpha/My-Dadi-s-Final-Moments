@@ -87,7 +87,7 @@
 
   function photo(p) {
     var u = p.url;
-    if (!u || u === PLACEHOLDER) return placeholder('Photograph to be added');
+    if (!u || u === PLACEHOLDER) return null;
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'photo';
@@ -105,27 +105,21 @@
 
   function render(all, order) {
     var posts = order === 'oldest' ? all : all.slice().reverse();
-    var frag = document.createDocumentFragment(), cur = '';
+    var frag = document.createDocumentFragment();
     posts.forEach(function (p) {
-      if (p.date.iso !== cur) {
-        cur = p.date.iso;
-        var h = document.createElement('li');
-        h.className = 'day';
-        h.setAttribute('role', 'presentation');
-        h.textContent = p.date.label;
-        frag.appendChild(h);
-      }
       var li = document.createElement('li');
       li.className = 'post' + (p.featured ? ' featured' : '');
       var tm = document.createElement('time');
       tm.dateTime = p.date.iso;
-      tm.textContent = p.time.label;
+      tm.textContent = p.date.label + ', ' + p.time.label;
       var d = document.createElement('p');
       d.className = 'desc';
       d.lang = 'bn';
       d.textContent = p.desc;
       d.style.whiteSpace = 'pre-line';
-      li.appendChild(tm); li.appendChild(d); li.appendChild(photo(p));
+      li.appendChild(tm); li.appendChild(d);
+      var ph = photo(p);
+      if (ph) li.appendChild(ph);
       frag.appendChild(li);
     });
     timeline.replaceChildren(frag);
