@@ -57,20 +57,21 @@
       if (!lines.length || lines[0].charAt(0) === '#') return;
       var f = lines[0].split('|').map(function (s) { return s.trim(); });
       while (f.length > 3 && !f[f.length - 1]) f.pop();
-      var feat = false, url = '';
+      var feat = false, urls = [];
       if (f.length > 3 && /^featured$/i.test(f[f.length - 1])) { feat = true; f.pop(); }
-      if (f.length > 3 && isUrl(f[f.length - 1])) url = f.pop();   // older "…|URL" style still works
+      if (f.length > 3 && isUrl(f[f.length - 1])) urls.push(f.pop());   // older "…|URL" style still works
       var d = f.length >= 3 ? parseDate(f[0]) : null;
       var t = f.length >= 3 ? parseTime(f[1]) : null;
       var desc = f.slice(2).join('|').replace(/\|+$/, '').trim();
       var extra = [];
-      lines.slice(1).forEach(function (l) { if (isUrl(l)) { if (!url) url = l; } else extra.push(l); });
+      lines.slice(1).forEach(function (l) { if (isUrl(l)) urls.push(l); else extra.push(l); });
       if (extra.length) desc = [desc].concat(extra).join('\n');
       if (!d || !t || !desc) { skipped++; console.warn('posts.txt: skipped malformed record #' + (i + 1) + ':', lines[0]); return; }
-      var key = [d.iso, t.label, desc, url].join('|');
+      urls = urls.filter(function (u, k) { return u !== PLACEHOLDER && urls.indexOf(u) === k; });
+      var key = [d.iso, t.label, desc, urls.join(',')].join('|');
       if (seen[key]) return;
       seen[key] = 1;
-      posts.push({ date: d, time: t, desc: desc, url: url, featured: feat, order: posts.length });
+      posts.push({ date: d, time: t, desc: desc, urls: urls, featured: feat, order: posts.length });
     });
     posts.sort(function (a, b) {
       return a.date.iso < b.date.iso ? -1 : a.date.iso > b.date.iso ? 1 : (a.time.minutes - b.time.minutes) || (a.order - b.order);
@@ -85,9 +86,19 @@
     return p;
   }
 
-  function photo(p) {
-    var u = p.url;
-    if (!u || u === PLACEHOLDER) return null;
+  function isVideo(u) { return /\.(mp4|webm|ogv|mov|m4v)([?#].*)?$/i.test(u); }
+
+  function mediaItem(u, p) {
+    if (isVideo(u)) {
+      var v = document.createElement('video');
+      v.controls = true;
+      v.preload = 'metadata';
+      v.setAttribute('playsinline', '');
+      v.setAttribute('aria-label', 'Video from ' + p.date.label + ', ' + p.time.label);
+      v.addEventListener('error', function () { v.replaceWith(placeholder('Video unavailable')); }, true);
+      v.src = u;
+      return v;
+    }
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'photo';
@@ -101,6 +112,14 @@
     btn.appendChild(img);
     btn.addEventListener('click', function () { openLb(u, img.alt, btn); });
     return btn;
+  }
+
+  function media(p) {
+    if (!p.urls.length) return null;
+    var box = document.createElement('div');
+    box.className = 'media';
+    p.urls.forEach(function (u) { box.appendChild(mediaItem(u, p)); });
+    return box;
   }
 
   function render(all, order) {
@@ -118,7 +137,7 @@
       d.textContent = p.desc;
       d.style.whiteSpace = 'pre-line';
       li.appendChild(tm); li.appendChild(d);
-      var ph = photo(p);
+      var ph = media(p);
       if (ph) li.appendChild(ph);
       frag.appendChild(li);
     });

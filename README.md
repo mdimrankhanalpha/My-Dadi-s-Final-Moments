@@ -11,10 +11,12 @@ A static memorial website (HTML, CSS, vanilla JavaScript). No build step, no bac
 Opening `index.html` directly from your computer will not load the memories (browsers block it). Use GitHub Pages.
 
 ## Add, edit or remove memories (posts.txt only)
-Each post has a first line, then an optional photo URL on the next line:
+Each post has a first line, then any number of photo or video URLs, one per line:
 
     DATE|TIME|DESCRIPTION
-    https://example.com/photo.jpg
+    https://example.com/photo1.jpg
+    https://example.com/photo2.jpg
+    https://example.com/video.mp4
 
 Posts are separated by a line containing only `$`. To add a post, add at the end:
 
@@ -28,6 +30,10 @@ Rules:
 - Order in the file does not matter. Visitors can switch between newest-first (default) and oldest-first.
 - A malformed record is skipped (see the browser console) and never breaks the others.
 - Adding `|FEATURED` after the description on the first line gives a post the quiet emphasised style. It is used on the final goodbye post.
+
+## Multiple photos and videos
+Put each URL on its own line under the post. They are shown in the order written. Links ending in `.mp4`, `.webm`, `.ogv`, `.mov` or `.m4v` appear as a video player; everything else is a photo.
+Tips for video: use MP4 (H.264) so it plays on every phone. Keep files small (GitHub allows up to 100 MB per file, 25 MB through the website upload). Upload the video to your repository and link to it with a relative path such as `videos/clip.mp4`, which is more reliable than a raw.githubusercontent.com link. YouTube or Facebook links are not supported.
 
 ## Posts without a photograph
 `2026-10-31 5:10 PM` (Dadi's passing) and `2026-10-31 10:57 PM` (Ghusl completed) have no photo yet. Add the URL on a new line under each one in `posts.txt`.

@@ -84,3 +84,6 @@ main{max-width:46rem;margin:0 auto;padding:0 1rem}
 .seg-btn[aria-pressed="true"]{background:var(--green);color:var(--ivory)}
 @media (max-width:360px){.seg-btn{font-size:.85rem;padding:.4rem .3rem}}
 .hero{will-change:opacity}
+
+.media{display:flex;flex-direction:column;gap:.9rem}
+.media video{display:block;width:100%;height:auto;max-height:80vh;background:#000;border-radius:2px}
