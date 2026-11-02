@@ -11,27 +11,26 @@ A static memorial website (HTML, CSS, vanilla JavaScript). No build step, no bac
 Opening `index.html` directly from your computer will not load the memories (browsers block it). Use GitHub Pages.
 
 ## Add, edit or remove memories (posts.txt only)
-Open `posts.txt` on GitHub, click the pencil icon, edit, and commit. Each post is one line:
+Each post has a first line, then an optional photo URL on the next line:
 
-    DATE|TIME|DESCRIPTION|IMAGE_URL
+    DATE|TIME|DESCRIPTION
+    https://example.com/photo.jpg
 
 Posts are separated by a line containing only `$`. To add a post, add at the end:
 
     $
-    2026-11-02|8:30 PM|নতুন একটি স্মৃতির বিবরণ|https://example.com/photo.jpg
+    2026-11-02|8:30 PM|নতুন একটি স্মৃতির বিবরণ
+    https://example.com/photo.jpg
 
 Rules:
-- DATE is `YYYY-MM-DD`. TIME is `h:mm AM` or `h:mm PM` (seconds are not needed). Times are shown as Bangladesh local time.
-- Posts are sorted automatically by date and time, so order in the file does not matter.
+- DATE is `YYYY-MM-DD`. TIME is `h:mm AM` or `h:mm PM`. Times are shown as Bangladesh local time.
+- No photo yet? Leave out the URL line. The post shows "Photograph to be added". Add the URL line later and the photo appears.
+- Order in the file does not matter. Visitors can switch between newest-first (default) and oldest-first.
 - A malformed record is skipped (see the browser console) and never breaks the others.
-- Optional fifth field `|FEATURED` gives a post the quiet emphasised style. It is used on the final goodbye post.
+- Adding `|FEATURED` after the description on the first line gives a post the quiet emphasised style. It is used on the final goodbye post.
 
-## Missing photographs
-Two posts have no photograph yet and show "Photograph to be added":
-- `2026-10-31|5:10 PM` (Dadi's passing)
-- `2026-10-31|10:57 PM` (Ghusl completed)
-
-In `posts.txt`, replace `IMAGE_URL_REQUIRED` on that line with the photo's URL (for example a raw.githubusercontent.com link). It will appear automatically.
+## Posts without a photograph
+`2026-10-31 5:10 PM` (Dadi's passing) and `2026-10-31 10:57 PM` (Ghusl completed) have no photo yet. Add the URL on a new line under each one in `posts.txt`.
 If a photo URL is wrong or unreachable, a gentle placeholder is shown instead of a broken image.
 
 ## Fonts

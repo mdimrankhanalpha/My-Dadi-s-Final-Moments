@@ -1,15 +1,21 @@
-2026-10-31|5:10 PM|দাদী ইন্তেকাল করেছেন।|IMAGE_URL_REQUIRED
+2026-10-31|5:10 PM|দাদী ইন্তেকাল করেছেন।
 $
-2026-10-31|9:27 PM|দাদীকে গোসল করানো হচ্ছে।|https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261031_203120.jpg
+2026-10-31|9:27 PM|দাদীকে গোসল করানো হচ্ছে।
+https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261031_203120.jpg
 $
-2026-10-31|10:57 PM|দাদীর গোসল করানো শেষ হয়েছে।|IMAGE_URL_REQUIRED
+2026-10-31|10:57 PM|দাদীর গোসল করানো শেষ হয়েছে।
 $
-2026-11-01|12:30 PM|আমরা দাদীকে নিয়ে যাচ্ছি।|https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_123043.jpg
+2026-11-01|12:30 PM|আমরা দাদীকে নিয়ে যাচ্ছি।
+https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_123043.jpg
 $
-2026-11-01|12:52 PM|দাদীকে আমরা জানাজার নামাজের জন্য ফরিদাবাদে নিয়ে আসলাম।|https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_125258.jpg
+2026-11-01|12:52 PM|দাদীকে আমরা জানাজার নামাজের জন্য ফরিদাবাদে নিয়ে আসলাম।
+https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_125258.jpg
 $
-2026-11-01|2:33 PM|দাদীকে দাফন করার কার্যক্রম শুরু হচ্ছে।|https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_143357.jpg
+2026-11-01|2:33 PM|দাদীকে দাফন করার কার্যক্রম শুরু হচ্ছে।
+https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_143357.jpg
 $
-2026-11-01|3:14 PM|দাদীকে দাফন করা শেষ হলো।|https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_151447.jpg
+2026-11-01|3:14 PM|দাদীকে দাফন করা শেষ হলো।
+https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_151447.jpg
 $
-2026-11-01|6:47 PM|দাদীকে কবরে একা রেখে বিদায় দিলাম।|https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_183523.jpg|FEATURED
+2026-11-01|6:47 PM|দাদীকে কবরে একা রেখে বিদায় দিলাম।|FEATURED
+https://raw.githubusercontent.com/mdimrankhanalpha/My-Dadi-s-Final-Moments/main/photos/IMG_20261101_183523.jpg

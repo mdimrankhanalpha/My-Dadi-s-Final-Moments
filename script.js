@@ -7,7 +7,26 @@
   var statusEl = document.getElementById('status');
   var lb = document.getElementById('lightbox');
   var lbImg = document.getElementById('lb-img');
-  var lastFocus = null;
+  var lastFocus = null, all = [], order = 'newest';
+  var hero = document.querySelector('.hero');
+  var btns = document.querySelectorAll('.seg-btn');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      order = b.getAttribute('data-order');
+      btns.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      if (all.length) render(all, order);
+    });
+  });
+
+  // The title section is temporary: it fades as it scrolls out of view. It never moves the page.
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var tick = false;
+  function fade() {
+    tick = false;
+    var h = hero.offsetHeight || 1;
+    hero.style.opacity = reduce ? '' : String(Math.max(0, 1 - window.scrollY / (h * 0.8)));
+  }
+  window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(fade); } }, { passive: true });
 
   function parseTime(raw) {
     var m = /^(\d{1,2}):(\d{2})(?::\d{2})?\s*([AaPp])\.?[Mm]\.?$/.exec(raw);
@@ -27,19 +46,27 @@
     return { iso: raw, label: d.getUTCDate() + ' ' + d.toLocaleString('en-GB', { month: 'long', timeZone: 'UTC' }) + ' ' + m[1] };
   }
 
+  function isUrl(l) { return /^https?:\/\//i.test(l) || l === PLACEHOLDER; }
+
   function parse(text) {
     var posts = [], seen = {}, skipped = 0;
-    text.replace(/^\uFEFF/, '').split(/^[ \t]*\$[ \t]*$/m).forEach(function (rec, i) {
-      rec = rec.trim();
-      if (!rec || rec.charAt(0) === '#') return;
-      var f = rec.split('|').map(function (s) { return s.trim(); });
-      var feat = false;
-      if (f.length >= 5 && /^featured$/i.test(f[f.length - 1])) { feat = true; f.pop(); }
-      var d = f.length >= 4 ? parseDate(f[0]) : null;
-      var t = f.length >= 4 ? parseTime(f[1]) : null;
-      var desc = f.slice(2, f.length - 1).join('|').trim();
-      if (!d || !t || !desc) { skipped++; console.warn('posts.txt: skipped malformed record #' + (i + 1) + ':', rec); return; }
-      var url = f[f.length - 1];
+    // tolerate stray brackets around the $ separators, e.g. "($" and "$)"
+    text = text.replace(/^\uFEFF/, '').replace(/\(\s*\$/g, '$').replace(/\$\s*\)/g, '$');
+    text.split(/^[ \t]*\$[ \t]*$/m).forEach(function (rec, i) {
+      var lines = rec.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+      if (!lines.length || lines[0].charAt(0) === '#') return;
+      var f = lines[0].split('|').map(function (s) { return s.trim(); });
+      while (f.length > 3 && !f[f.length - 1]) f.pop();
+      var feat = false, url = '';
+      if (f.length > 3 && /^featured$/i.test(f[f.length - 1])) { feat = true; f.pop(); }
+      if (f.length > 3 && isUrl(f[f.length - 1])) url = f.pop();   // older "…|URL" style still works
+      var d = f.length >= 3 ? parseDate(f[0]) : null;
+      var t = f.length >= 3 ? parseTime(f[1]) : null;
+      var desc = f.slice(2).join('|').replace(/\|+$/, '').trim();
+      var extra = [];
+      lines.slice(1).forEach(function (l) { if (isUrl(l)) { if (!url) url = l; } else extra.push(l); });
+      if (extra.length) desc = [desc].concat(extra).join('\n');
+      if (!d || !t || !desc) { skipped++; console.warn('posts.txt: skipped malformed record #' + (i + 1) + ':', lines[0]); return; }
       var key = [d.iso, t.label, desc, url].join('|');
       if (seen[key]) return;
       seen[key] = 1;
@@ -76,7 +103,8 @@
     return btn;
   }
 
-  function render(posts) {
+  function render(all, order) {
+    var posts = order === 'oldest' ? all : all.slice().reverse();
     var frag = document.createDocumentFragment(), cur = '';
     posts.forEach(function (p) {
       if (p.date.iso !== cur) {
@@ -96,6 +124,7 @@
       d.className = 'desc';
       d.lang = 'bn';
       d.textContent = p.desc;
+      d.style.whiteSpace = 'pre-line';
       li.appendChild(tm); li.appendChild(d); li.appendChild(photo(p));
       frag.appendChild(li);
     });
@@ -124,7 +153,8 @@
       var res = parse(txt);
       if (!res.posts.length) { statusEl.textContent = 'No memories have been added yet.'; return; }
       statusEl.hidden = true;
-      render(res.posts);
+      all = res.posts;
+      render(all, order);
     })
     .catch(function (err) {
       console.error(err);

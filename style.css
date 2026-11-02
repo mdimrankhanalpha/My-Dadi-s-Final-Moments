@@ -75,3 +75,12 @@ main{max-width:46rem;margin:0 auto;padding:0 1rem}
   @keyframes fade{from{opacity:0}to{opacity:1}}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Sort bar (stays visible once the title section has scrolled away) */
+.bar{position:sticky;top:0;z-index:20;background:rgba(10,13,11,.94);border-bottom:1px solid rgba(168,144,90,.25);padding:.6rem 1rem;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.seg{display:flex;max-width:30rem;margin:0 auto;border:1px solid rgba(168,144,90,.45);border-radius:999px;overflow:hidden}
+.seg-btn{flex:1;min-height:44px;padding:.4rem .6rem;font:inherit;font-size:.95rem;color:var(--muted);background:transparent;border:0;cursor:pointer;transition:background .2s,color .2s}
+.seg-btn+.seg-btn{border-left:1px solid rgba(168,144,90,.45)}
+.seg-btn[aria-pressed="true"]{background:var(--green);color:var(--ivory)}
+@media (max-width:360px){.seg-btn{font-size:.85rem;padding:.4rem .3rem}}
+.hero{will-change:opacity}
