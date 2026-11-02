@@ -88,15 +88,54 @@
 
   function isVideo(u) { return /\.(mp4|webm|ogv|mov|m4v)([?#].*)?$/i.test(u); }
 
+  // Loading strategy: nothing is fetched until it is near the screen; what is on screen loads first.
+  var HAS_IO = 'IntersectionObserver' in window;
+  var near = HAS_IO ? new IntersectionObserver(onNear, { rootMargin: '1500px 0px' }) : null;
+  var onScreen = HAS_IO ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      onScreen.unobserve(e.target);
+      var im = e.target.querySelector && e.target.querySelector('img');
+      if (im && !im.complete && 'fetchPriority' in im) im.fetchPriority = 'high';
+    });
+  }, { rootMargin: '0px' }) : null;
+
+  function onNear(entries) {
+    var vh = window.innerHeight;
+    entries.filter(function (e) { return e.isIntersecting; })
+      .sort(function (a, b) { return Math.abs(a.boundingClientRect.top) - Math.abs(b.boundingClientRect.top); })
+      .forEach(function (e) {
+        near.unobserve(e.target);
+        var r = e.boundingClientRect;
+        start(e.target, r.bottom > 0 && r.top < vh);
+      });
+  }
+
+  function start(el, visible) {
+    var im = el.tagName === 'IMG' ? el : el.querySelector('img');
+    if (im) {
+      if ('fetchPriority' in im) im.fetchPriority = visible ? 'high' : 'low';
+      im.src = im.getAttribute('data-src');
+    } else if (el.tagName === 'VIDEO') {
+      el.preload = 'metadata';
+      el.src = el.getAttribute('data-src');
+    }
+  }
+
+  function queue(el) {
+    if (near) { near.observe(el); if (onScreen) onScreen.observe(el); } else start(el, true);
+  }
+
   function mediaItem(u, p) {
     if (isVideo(u)) {
       var v = document.createElement('video');
       v.controls = true;
-      v.preload = 'metadata';
+      v.preload = 'none';
       v.setAttribute('playsinline', '');
+      v.setAttribute('data-src', u);
       v.setAttribute('aria-label', 'Video from ' + p.date.label + ', ' + p.time.label);
       v.addEventListener('error', function () { v.replaceWith(placeholder('Video unavailable')); }, true);
-      v.src = u;
+      queue(v);
       return v;
     }
     var btn = document.createElement('button');
@@ -104,13 +143,14 @@
     btn.className = 'photo';
     btn.setAttribute('aria-label', 'Enlarge photograph: ' + p.time.label + ', ' + p.date.label);
     var img = document.createElement('img');
-    img.loading = 'lazy';
     img.decoding = 'async';
     img.alt = 'Photograph from ' + p.date.label + ', ' + p.time.label;
+    img.setAttribute('data-src', u);
+    img.addEventListener('load', function () { btn.classList.add('loaded'); });
     img.addEventListener('error', function () { btn.replaceWith(placeholder('Photograph unavailable')); });
-    img.src = u;
     btn.appendChild(img);
     btn.addEventListener('click', function () { openLb(u, img.alt, btn); });
+    queue(btn);
     return btn;
   }
 
@@ -123,6 +163,8 @@
   }
 
   function render(all, order) {
+    if (near) near.disconnect();       // forget items from the previous render
+    if (onScreen) onScreen.disconnect();
     var posts = order === 'oldest' ? all : all.slice().reverse();
     var frag = document.createDocumentFragment();
     posts.forEach(function (p) {

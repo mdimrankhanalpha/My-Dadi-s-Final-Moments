@@ -77,7 +77,7 @@ main{max-width:46rem;margin:0 auto;padding:0 1rem}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 /* Sort bar (stays visible once the title section has scrolled away) */
-.bar{position:sticky;top:0;z-index:20;background:rgba(10,13,11,.94);border-bottom:1px solid rgba(168,144,90,.25);padding:.6rem 1rem;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.bar{padding:.9rem 1rem .2rem}
 .seg{display:flex;max-width:30rem;margin:0 auto;border:1px solid rgba(168,144,90,.45);border-radius:999px;overflow:hidden}
 .seg-btn{flex:1;min-height:44px;padding:.4rem .6rem;font:inherit;font-size:.95rem;color:var(--muted);background:transparent;border:0;cursor:pointer;transition:background .2s,color .2s}
 .seg-btn+.seg-btn{border-left:1px solid rgba(168,144,90,.45)}
@@ -87,3 +87,21 @@ main{max-width:46rem;margin:0 auto;padding:0 1rem}
 
 .media{display:flex;flex-direction:column;gap:.9rem}
 .media video{display:block;width:100%;height:auto;max-height:80vh;background:#000;border-radius:2px}
+
+/* Photos: reserve space while loading, then fade in */
+.photo{min-height:12rem;background:var(--charcoal)}
+.photo.loaded{min-height:0}
+.photo img{opacity:0;transition:opacity .35s}
+.photo.loaded img{opacity:1}
+.media video{aspect-ratio:auto 16/9}
+.desc{overflow-wrap:anywhere}
+
+/* Screen fitting */
+@media (min-width:1100px){main{max-width:54rem}}
+@media (min-width:1600px){main{max-width:60rem}}
+@media (orientation:landscape) and (max-height:520px){
+  .hero{padding-top:1.25rem;padding-bottom:1.25rem}
+  .ayah{line-height:1.6}
+  .lightbox{padding-top:3.25rem}
+}
+.lightbox{height:100vh;height:100dvh}

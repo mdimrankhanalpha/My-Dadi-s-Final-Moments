@@ -39,5 +39,9 @@ Tips for video: use MP4 (H.264) so it plays on every phone. Keep files small (Gi
 `2026-10-31 5:10 PM` (Dadi's passing) and `2026-10-31 10:57 PM` (Ghusl completed) have no photo yet. Add the URL on a new line under each one in `posts.txt`.
 If a photo URL is wrong or unreachable, a gentle placeholder is shown instead of a broken image.
 
+## Faster photos
+Photos straight from a phone are often 3 to 8 MB each, which is the main cause of slow loading. Before uploading, shrink each one to about 1600 px on its longest side (JPEG, roughly 200 to 400 KB); it will still look sharp on every screen. Hosting the photos in the same repository as the site and linking them by a relative path such as `photos/IMG_001.jpg` is also faster than raw.githubusercontent.com links.
+The site loads the photo you are looking at first, then the ones just ahead, and waits on the rest until you scroll near them.
+
 ## Fonts
 Amiri (Arabic), Noto Serif Bengali and Cormorant Garamond load from Google Fonts. Without internet, good system fonts are used instead.
