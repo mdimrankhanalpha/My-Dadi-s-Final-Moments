@@ -41,7 +41,7 @@ If a photo URL is wrong or unreachable, a gentle placeholder is shown instead of
 
 ## Faster photos
 Photos straight from a phone are often 3 to 8 MB each, which is the main cause of slow loading. Before uploading, shrink each one to about 1600 px on its longest side (JPEG, roughly 200 to 400 KB); it will still look sharp on every screen. Hosting the photos in the same repository as the site and linking them by a relative path such as `photos/IMG_001.jpg` is also faster than raw.githubusercontent.com links.
-The site loads the photo you are looking at first, then the ones just ahead, and waits on the rest until you scroll near them.
+The site loads the photo you are looking at first. Each photo appears as a tiny low-quality copy, then a medium copy, then your untouched original. The small copies are made on the fly by the free wsrv.nl image service from your photo's public link. To turn this off, set `PREVIEW_PROXY` to `''` near the top of the loading code in `script.js`; photos then load directly. Photos linked by a relative path (such as `photos/x.jpg`) skip the service and load directly.
 
 ## Fonts
 Amiri (Arabic), Noto Serif Bengali and Cormorant Garamond load from Google Fonts. Without internet, good system fonts are used instead.
